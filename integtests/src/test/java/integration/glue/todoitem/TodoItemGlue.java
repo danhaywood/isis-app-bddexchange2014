@@ -9,10 +9,13 @@ import dom.simple.TodoItems;
 import fixture.simple.scenario.SomeCompleteAndSomeIncompleteTodoItems;
 
 import java.util.List;
+import org.apache.isis.applib.services.wrapper.DisabledException;
 import org.apache.isis.core.specsupport.specs.CukeGlueAbstract;
 
+import static org.apache.isis.core.commons.matchers.IsisMatchers.contains;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class TodoItemGlue extends CukeGlueAbstract {
 
@@ -47,5 +50,36 @@ public class TodoItemGlue extends CukeGlueAbstract {
 
         assertThat(todoItem.getComplete(), is(true));
     }
+
+
+    @Given("^a complete todo item$")
+    public void a_complete_todo_item() throws Throwable {
+        final List<TodoItem> items = scenarioExecution().service(TodoItems.class).listAll();
+        for (TodoItem item : items) {
+            if(item.getComplete()) {
+                scenarioExecution().putVar("todo-item", "complete", item);
+                return;
+            }
+        }
+        throw new RuntimeException("Could not locate a complete todo item");
+    }
+
+    @When("^I attempt to complete the todo item$")
+    public void I_attempt_to_complete_the_todo_item() throws Throwable {
+        final TodoItem todoItem = scenarioExecution().getVar("todo-item", "complete", TodoItem.class);
+        try {
+            wrap(todoItem).completed();
+            fail();
+        } catch(DisabledException ex) {
+            scenarioExecution().putVar("exception", "disabled", ex);
+        }
+    }
+
+    @Then("^the message advises me that the todo item is already completed.$")
+    public void the_message_advises_me_that_the_todo_item_is_already_completed() throws Throwable {
+        final DisabledException ex = scenarioExecution().getVar("exception", "disabled", DisabledException.class);
+        assertThat(ex.getMessage(), contains("Already completed"));
+    }
+
 
 }
