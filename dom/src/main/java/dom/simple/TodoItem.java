@@ -21,10 +21,7 @@ package dom.simple;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.VersionStrategy;
 import org.apache.isis.applib.DomainObjectContainer;
-import org.apache.isis.applib.annotation.Bookmarkable;
-import org.apache.isis.applib.annotation.MemberOrder;
-import org.apache.isis.applib.annotation.ObjectType;
-import org.apache.isis.applib.annotation.Title;
+import org.apache.isis.applib.annotation.*;
 import org.apache.isis.applib.util.ObjectContracts;
 
 @javax.jdo.annotations.PersistenceCapable(identityType=IdentityType.DATASTORE)
@@ -54,6 +51,28 @@ public class TodoItem implements Comparable<TodoItem> {
     }
 
     //endregion
+
+    //region > complete (property)
+    private boolean complete;
+
+    @MemberOrder(sequence="2")
+    public boolean getComplete() {
+        return complete;
+    }
+
+    public void setComplete(final boolean complete) {
+        this.complete = complete;
+    }
+    //endregion
+
+    //region > completed (action)
+    @MemberOrder(sequence = "1", name="complete")
+    public TodoItem completed() {
+        setComplete(true);
+        return this;
+    }
+    //endregion
+
 
     //region > compareTo
 
