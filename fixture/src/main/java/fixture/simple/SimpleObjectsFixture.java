@@ -19,8 +19,8 @@
 
 package fixture.simple;
 
-import dom.simple.SimpleObject;
-import dom.simple.SimpleObjects;
+import dom.simple.TodoItem;
+import dom.simple.TodoItems;
 
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 
@@ -44,13 +44,13 @@ public class SimpleObjectsFixture extends FixtureScript {
 
     // //////////////////////////////////////
 
-    private SimpleObject create(final String name, ExecutionContext executionContext) {
-        return executionContext.add(this, simpleObjects.create(name));
+    private TodoItem create(final String name, ExecutionContext executionContext) {
+        return executionContext.add(this, todoItems.create(name));
     }
 
     // //////////////////////////////////////
 
     @javax.inject.Inject
-    private SimpleObjects simpleObjects;
+    private TodoItems todoItems;
 
 }

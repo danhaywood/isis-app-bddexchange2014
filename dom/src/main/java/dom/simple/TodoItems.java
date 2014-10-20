@@ -28,26 +28,26 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 
-@DomainService(menuOrder = "10", repositoryFor = SimpleObject.class)
-public class SimpleObjects {
+@DomainService(menuOrder = "10", repositoryFor = TodoItem.class)
+public class TodoItems {
 
     //region > listAll (action)
 
     @Bookmarkable
     @ActionSemantics(Of.SAFE)
     @MemberOrder(sequence = "1")
-    public List<SimpleObject> listAll() {
-        return container.allInstances(SimpleObject.class);
+    public List<TodoItem> listAll() {
+        return container.allInstances(TodoItem.class);
     }
 
     //endregion
 
     //region > create (action)
     @MemberOrder(sequence = "2")
-    public SimpleObject create(
-            final @Named("Name") String name) {
-        final SimpleObject obj = container.newTransientInstance(SimpleObject.class);
-        obj.setName(name);
+    public TodoItem create(
+            final @Named("Description") String description) {
+        final TodoItem obj = container.newTransientInstance(TodoItem.class);
+        obj.setDescription(description);
         container.persistIfNotAlready(obj);
         return obj;
     }

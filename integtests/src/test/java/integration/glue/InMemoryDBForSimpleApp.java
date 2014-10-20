@@ -16,7 +16,7 @@
  */
 package integration.glue;
 
-import dom.simple.SimpleObject;
+import dom.simple.TodoItem;
 
 import org.apache.isis.core.specsupport.scenarios.InMemoryDB;
 import org.apache.isis.core.specsupport.scenarios.ScenarioExecution;
@@ -32,9 +32,9 @@ public class InMemoryDBForSimpleApp extends InMemoryDB {
      */
     @Override
     protected void init(Object obj, String str) {
-        if(obj instanceof SimpleObject) {
-            SimpleObject toDoItem = (SimpleObject) obj;
-            toDoItem.setName(str);
+        if(obj instanceof TodoItem) {
+            TodoItem toDoItem = (TodoItem) obj;
+            toDoItem.setDescription(str);
         }
     }
 }

@@ -25,24 +25,24 @@ import org.junit.Test;
 
 public class SimpleObjectTest_name {
 
-    private SimpleObject simpleObject;
+    private TodoItem todoItem;
 
     @Before
     public void setUp() throws Exception {
-        simpleObject = new SimpleObject();
+        todoItem = new TodoItem();
     }
     
     @Test
     public void happyCase() throws Exception {
         // given
         String name = "Foobar";
-        assertThat(simpleObject.getName(), is(nullValue()));
+        assertThat(todoItem.getDescription(), is(nullValue()));
         
         // when
-        simpleObject.setName(name);
+        todoItem.setDescription(name);
         
         // then
-        assertThat(simpleObject.getName(), is(name));
+        assertThat(todoItem.getDescription(), is(name));
     }
     
 }

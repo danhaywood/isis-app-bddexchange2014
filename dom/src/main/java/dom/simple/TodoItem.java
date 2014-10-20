@@ -36,21 +36,21 @@ import org.apache.isis.applib.util.ObjectContracts;
         column="version")
 @ObjectType("SIMPLE")
 @Bookmarkable
-public class SimpleObject implements Comparable<SimpleObject> {
+public class TodoItem implements Comparable<TodoItem> {
 
-    //region > name (property)
+    //region > description (property)
 
-    private String name;
+    private String description;
 
     @javax.jdo.annotations.Column(allowsNull="false")
     @Title(sequence="1")
     @MemberOrder(sequence="1")
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public void setDescription(final String description) {
+        this.description = description;
     }
 
     //endregion
@@ -58,7 +58,7 @@ public class SimpleObject implements Comparable<SimpleObject> {
     //region > compareTo
 
     @Override
-    public int compareTo(SimpleObject other) {
+    public int compareTo(TodoItem other) {
         return ObjectContracts.compare(this, other, "name");
     }
 

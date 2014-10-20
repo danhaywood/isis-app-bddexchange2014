@@ -37,38 +37,38 @@ public class SimpleObjectsTest_create {
     @Mock
     private DomainObjectContainer mockContainer;
     
-    private SimpleObjects simpleObjects;
+    private TodoItems todoItems;
 
     @Before
     public void setUp() throws Exception {
-        simpleObjects = new SimpleObjects();
-        simpleObjects.container = mockContainer;
+        todoItems = new TodoItems();
+        todoItems.container = mockContainer;
     }
     
     @Test
     public void happyCase() throws Exception {
         
         // given
-        final SimpleObject simpleObject = new SimpleObject();
+        final TodoItem todoItem = new TodoItem();
         
         final Sequence seq = context.sequence("create");
         context.checking(new Expectations() {
             {
-                oneOf(mockContainer).newTransientInstance(SimpleObject.class);
+                oneOf(mockContainer).newTransientInstance(TodoItem.class);
                 inSequence(seq);
-                will(returnValue(simpleObject));
+                will(returnValue(todoItem));
                 
-                oneOf(mockContainer).persistIfNotAlready(simpleObject);
+                oneOf(mockContainer).persistIfNotAlready(todoItem);
                 inSequence(seq);
             }
         });
         
         // when
-        final SimpleObject obj = simpleObjects.create("Foobar");
+        final TodoItem obj = todoItems.create("Foobar");
         
         // then
-        assertThat(obj, is(simpleObject));
-        assertThat(obj.getName(), is("Foobar"));
+        assertThat(obj, is(todoItem));
+        assertThat(obj.getDescription(), is("Foobar"));
     }
 
 }

@@ -41,29 +41,29 @@ public class SimpleObjectsTest_listAll {
     @Mock
     private DomainObjectContainer mockContainer;
     
-    private SimpleObjects simpleObjects;
+    private TodoItems todoItems;
 
     @Before
     public void setUp() throws Exception {
-        simpleObjects = new SimpleObjects();
-        simpleObjects.container = mockContainer;
+        todoItems = new TodoItems();
+        todoItems.container = mockContainer;
     }
     
     @Test
     public void happyCase() throws Exception {
         
         // given
-        final List<SimpleObject> all = Lists.newArrayList();
+        final List<TodoItem> all = Lists.newArrayList();
         
         context.checking(new Expectations() {
             {
-                oneOf(mockContainer).allInstances(SimpleObject.class);
+                oneOf(mockContainer).allInstances(TodoItem.class);
                 will(returnValue(all));
             }
         });
         
         // when
-        final List<SimpleObject> list = simpleObjects.listAll();
+        final List<TodoItem> list = todoItems.listAll();
         
         // then
         assertThat(list, is(all));

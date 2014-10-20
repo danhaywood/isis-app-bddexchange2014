@@ -24,8 +24,8 @@ import java.util.UUID;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
-import dom.simple.SimpleObject;
-import dom.simple.SimpleObjects;
+import dom.simple.TodoItem;
+import dom.simple.TodoItems;
 
 import org.hamcrest.Description;
 import org.jmock.Expectations;
@@ -42,13 +42,13 @@ public class SimpleObjectGlue extends CukeGlueAbstract {
         if(supportsMocks()) {
             checking(new Expectations() {
                 {
-                    allowing(service(SimpleObjects.class)).listAll();
+                    allowing(service(TodoItems.class)).listAll();
                     will(returnValue(allSimpleObjects()));
                 }
             });
         }
         try {
-            final List<SimpleObject> findAll = service(SimpleObjects.class).listAll();
+            final List<TodoItem> findAll = service(TodoItems.class).listAll();
             assertThat(findAll.size(), is(n));
             putVar("list", "all", findAll);
             
@@ -62,12 +62,12 @@ public class SimpleObjectGlue extends CukeGlueAbstract {
         if(supportsMocks()) {
             checking(new Expectations() {
                 {
-                    oneOf(service(SimpleObjects.class)).create(with(any(String.class)));
+                    oneOf(service(TodoItems.class)).create(with(any(String.class)));
                     will(addToInMemoryDB());
                 }
             });
         }
-        service(SimpleObjects.class).create(UUID.randomUUID().toString());
+        service(TodoItems.class).create(UUID.randomUUID().toString());
     }
     
     private Action addToInMemoryDB() {
@@ -77,9 +77,9 @@ public class SimpleObjectGlue extends CukeGlueAbstract {
             public Object invoke(Invocation invocation) throws Throwable {
                 final InMemoryDB inMemoryDB = getVar("isis", "in-memory-db", InMemoryDB.class);
                 final String name = (String)invocation.getParameter(0);
-                final SimpleObject obj = new SimpleObject();
-                obj.setName(name);
-                inMemoryDB.put(SimpleObject.class, name, obj);
+                final TodoItem obj = new TodoItem();
+                obj.setDescription(name);
+                inMemoryDB.put(TodoItem.class, name, obj);
                 return obj;
             }
             
@@ -91,8 +91,8 @@ public class SimpleObjectGlue extends CukeGlueAbstract {
     }
 
     // helper
-    private List<SimpleObject> allSimpleObjects() {
+    private List<TodoItem> allSimpleObjects() {
         final InMemoryDB inMemoryDB = getVar("isis", "in-memory-db", InMemoryDB.class);
-        return inMemoryDB.findAll(SimpleObject.class);
+        return inMemoryDB.findAll(TodoItem.class);
     }
 }

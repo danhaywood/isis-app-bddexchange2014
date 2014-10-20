@@ -17,7 +17,7 @@
 package integration.glue;
 
 import cucumber.api.java.Before;
-import dom.simple.SimpleObject;
+import dom.simple.TodoItem;
 import fixture.simple.SimpleObjectsFixture;
 
 import org.apache.isis.core.specsupport.scenarios.InMemoryDB;
@@ -29,9 +29,9 @@ public class CatalogOfFixturesGlue extends CukeGlueAbstract {
     @Before(value={"@unit", "@SimpleObjectsFixture"}, order=20000)
     public void unitFixtures() throws Throwable {
         final InMemoryDB inMemoryDB = new InMemoryDBForSimpleApp(this.scenarioExecution());
-        inMemoryDB.getElseCreate(SimpleObject.class, "Foo");
-        inMemoryDB.getElseCreate(SimpleObject.class, "Bar");
-        inMemoryDB.getElseCreate(SimpleObject.class, "Baz");
+        inMemoryDB.getElseCreate(TodoItem.class, "Foo");
+        inMemoryDB.getElseCreate(TodoItem.class, "Bar");
+        inMemoryDB.getElseCreate(TodoItem.class, "Baz");
         putVar("isis", "in-memory-db", inMemoryDB);
     }
 

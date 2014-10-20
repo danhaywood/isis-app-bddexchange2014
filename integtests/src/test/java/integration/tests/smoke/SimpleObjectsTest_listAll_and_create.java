@@ -18,8 +18,8 @@
  */
 package integration.tests.smoke;
 
-import dom.simple.SimpleObject;
-import dom.simple.SimpleObjects;
+import dom.simple.TodoItem;
+import dom.simple.TodoItems;
 import fixture.simple.SimpleObjectsFixture;
 import integration.tests.SimpleAppIntegTest;
 
@@ -39,27 +39,27 @@ public class SimpleObjectsTest_listAll_and_create extends SimpleAppIntegTest {
     }
 
     @Inject
-    private SimpleObjects simpleObjects;
+    private TodoItems todoItems;
 
     @Test
     public void listAll() throws Exception {
 
-        final List<SimpleObject> all = wrap(simpleObjects).listAll();
+        final List<TodoItem> all = wrap(todoItems).listAll();
         assertThat(all.size(), is(3));
         
-        SimpleObject simpleObject = wrap(all.get(0));
-        assertThat(simpleObject.getName(), is("Foo"));
+        TodoItem todoItem = wrap(all.get(0));
+        assertThat(todoItem.getDescription(), is("Foo"));
     }
     
     @Test
     public void create() throws Exception {
 
         // when
-        wrap(simpleObjects).create("Faz");
+        wrap(todoItems).create("Faz");
         nextTransaction();
 
         // then
-        final List<SimpleObject> all = wrap(simpleObjects).listAll();
+        final List<TodoItem> all = wrap(todoItems).listAll();
         assertThat(all.size(), is(4));
     }
 
