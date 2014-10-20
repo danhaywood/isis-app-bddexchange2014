@@ -33,9 +33,9 @@ import org.apache.isis.applib.fixturescripts.SimpleFixtureScript;
  */
 @Named("Prototyping")
 @DomainService(menuOrder = "20")
-public class SimpleObjectsFixturesService extends FixtureScripts {
+public class TodoAppFixturesService extends FixtureScripts {
 
-    public SimpleObjectsFixturesService() {
+    public TodoAppFixturesService() {
         super("fixture.simple");
     }
 
