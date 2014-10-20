@@ -71,6 +71,10 @@ public class TodoItem implements Comparable<TodoItem> {
         setComplete(true);
         return this;
     }
+
+    public String disableCompleted() {
+        return getComplete()? "Already completed": null;
+    }
     //endregion
 
 
