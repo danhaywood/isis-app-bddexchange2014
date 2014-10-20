@@ -22,41 +22,48 @@ public class TodoItemIntegTest extends SimpleAppIntegTest {
 
     FixtureScript fixtureScript;
 
-    @Before
-    public void setUpData() throws Exception {
-        fixtureScript = new SomeCompleteAndSomeIncompleteTodoItems();
-        fixtureScripts.runFixtureScript(fixtureScript, null);
+    public static class Completed extends TodoItemIntegTest {
+
+        @Before
+        public void setUpData() throws Exception {
+            fixtureScript = new SomeCompleteAndSomeIncompleteTodoItems();
+            fixtureScripts.runFixtureScript(fixtureScript, null);
+        }
+
+        @Test
+        public void happyCase_ifNotYetComplete() throws Exception {
+            // given
+            final TodoItem item = fixtureScript.lookup("some-complete-and-some-incomplete-todo-items/some-incomplete-todo-items/todo-item-pick-up-laundry/item-1", TodoItem.class);
+            final TodoItem wrappedItem = wrapperFactory.wrap(item);
+
+            assertThat(wrappedItem.getComplete(), is(false));
+
+            // when
+            wrappedItem.completed();
+
+            // then
+            assertThat(wrappedItem.getComplete(), is(true));
+        }
+
+        @Test
+        public void sadCase_whenAlreadyComplete() throws Exception {
+            // given
+            final TodoItem item = fixtureScript.lookup("some-complete-and-some-incomplete-todo-items/some-incomplete-todo-items/todo-item-buy-bread/item-1", TodoItem.class);
+            final TodoItem wrappedItem = wrapperFactory.wrap(item);
+
+            assertThat(wrappedItem.getComplete(), is(true));
+
+            // then
+            expectedExceptions.expect(DisabledException.class);
+
+            // when
+            wrappedItem.completed();
+        }
+
+
     }
 
-    @Test
-    public void canCompleteIfNotYetCompleted() throws Exception {
-        // given
-        final TodoItem item = fixtureScript.lookup("some-complete-and-some-incomplete-todo-items/some-incomplete-todo-items/todo-item-pick-up-laundry/item-1", TodoItem.class);
-        final TodoItem wrappedItem = wrapperFactory.wrap(item);
-
-        assertThat(wrappedItem.getComplete(), is(false));
-
-        // when
-        wrappedItem.completed();
-
-        // then
-        assertThat(wrappedItem.getComplete(), is(true));
-    }
-
-    @Test
-    public void cannotCompleteIfNotYetCompleted() throws Exception {
-        // given
-        final TodoItem item = fixtureScript.lookup("some-complete-and-some-incomplete-todo-items/some-incomplete-todo-items/todo-item-buy-bread/item-1", TodoItem.class);
-        final TodoItem wrappedItem = wrapperFactory.wrap(item);
-        assertThat(wrappedItem.getComplete(), is(true));
-
-        // then
-        expectedExceptions.expect(DisabledException.class);
-
-        // when
-        wrappedItem.completed();
-    }
-
+    //region > injected services
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -69,4 +76,6 @@ public class TodoItemIntegTest extends SimpleAppIntegTest {
 
     @Inject
     FixtureScripts fixtureScripts;
+
+    //endregion
 }
